@@ -26,12 +26,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.bio.SocketConnector;
-import org.eclipse.jetty.server.ssl.SslSocketConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 /**
- * 
+ *
  * This class launches the web application in an embedded Jetty container.
  * This is the entry point to your application. The Java command that is used for
  * launching should fire this main method.
@@ -39,7 +39,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * @author John Simone
  */
 public class Main {
-    
+
     /**
      * @param args
      */
@@ -72,21 +72,30 @@ public class Main {
 
             Server server = new Server(Integer.valueOf(Integer.valueOf(webPort)));
 
-            SocketConnector connector = new SocketConnector();
-            connector.setPort(Integer.valueOf(webPort));
+            // HTTP Connector
+            ServerConnector httpConnector = new ServerConnector(server);
+            httpConnector.setPort(Integer.parseInt(webPort));
+            server.addConnector(httpConnector);
 
-            SslSocketConnector sslConnector = new SslSocketConnector();
-            sslConnector.setPort(Integer.valueOf(sslPort));
-            sslConnector.setKeyPassword("123456");
-            sslConnector.setKeystore("keystore");
+            // SSL Connector
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+            sslContextFactory.setKeyStorePath("keystore");
+            sslContextFactory.setKeyStorePassword("changeit");
+            sslContextFactory.setKeyManagerPassword("changeit");
 
-            server.setConnectors(new Connector[] { sslConnector, connector });
+            ServerConnector sslConnector = new ServerConnector(server, sslContextFactory);
+            sslConnector.setPort(Integer.parseInt(sslPort));
+            server.addConnector(sslConnector);
+
             WebAppContext root = new WebAppContext();
-
             root.setContextPath("/");
-            root.setDescriptor(webappDirLocation+"/WEB-INF/web.xml");
+            root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
             root.setResourceBase(webappDirLocation);
             root.setParentLoaderPriority(true);
+
+            // Enable JSP support
+            root.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
+                    ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/[^/]*taglibs.*\\.jar$");
 
             server.setHandler(root);
             server.start();
@@ -112,12 +121,13 @@ public class Main {
             root.setContextPath("/");
             root.setDescriptor(webappDirLocation+"/WEB-INF/web.xml");
             root.setResourceBase(webappDirLocation);
-
             //Parent loader priority is a class loader setting that Jetty accepts.
             //By default Jetty will behave like most web containers in that it will
             //allow your application to replace non-server libraries that are part of the
             //container. Setting parent loader priority to true changes this behavior.
             //Read more here: http://wiki.eclipse.org/Jetty/Reference/Jetty_Classloading
+            root.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
+                    ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/[^/]*taglibs.*\\.jar$");
             root.setParentLoaderPriority(true);
 
             server.setHandler(root);
