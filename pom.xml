@@ -9,7 +9,7 @@
     <artifactId>sfdc-canvas-java-template</artifactId>
 
     <properties>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -17,45 +17,63 @@
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jsp-2.1-glassfish</artifactId>
-            <version>2.1.v20100127</version>
-        </dependency>
+
         <!-- Jackson -->
         <dependency>
-          <groupId>org.codehaus.jackson</groupId>
-          <artifactId>jackson-mapper-asl</artifactId>
-          <version>1.9.13</version>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
         </dependency>
+
         <!-- Jetty -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>7.6.0.v20120127</version>
+            <version>9.4.48.v20220622</version>
         </dependency>
 
+        <!-- JSP support in Jetty -->
         <dependency>
-          <groupId>asm</groupId>
-          <artifactId>asm</artifactId>
-          <version>3.2</version>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>apache-jsp</artifactId>
+            <version>9.4.48.v20220622</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.3.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.servlet.jsp.jstl</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <!-- ASM -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.1</version>
+        </dependency>
+   
 
         <!-- Need this for some of the JSON parsing in OAuthServlet -->
         <dependency>
-             <groupId>org.json</groupId>
-             <artifactId>json</artifactId>
-             <version>20080701</version>
-         </dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20080701</version>
+        </dependency>
 
         <!-- Needed for the proxy -->
         <dependency>
-             <groupId>commons-httpclient</groupId>
-             <artifactId>commons-httpclient</artifactId>
-             <version>3.1</version>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
@@ -111,3 +129,4 @@
         </plugins>
     </build>
 </project>
+
