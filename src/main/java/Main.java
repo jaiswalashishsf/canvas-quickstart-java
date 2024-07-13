@@ -77,7 +77,7 @@ public class Main {
 
             SslSocketConnector sslConnector = new SslSocketConnector();
             sslConnector.setPort(Integer.valueOf(sslPort));
-            sslConnector.setKeyPassword("changeit");
+            sslConnector.setKeyPassword("123456");
             sslConnector.setKeystore("keystore");
 
             server.setConnectors(new Connector[] { sslConnector, connector });
