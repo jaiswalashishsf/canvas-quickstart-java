@@ -70,27 +70,27 @@ public class Main {
                 }
             }
 
-            Server server = new Server(Integer.valueOf(Integer.valueOf(webPort)));
+            // Server server = new Server(Integer.valueOf(Integer.valueOf(webPort)));
 
-            SocketConnector connector = new SocketConnector();
-            connector.setPort(Integer.valueOf(webPort));
+            // SocketConnector connector = new SocketConnector();
+            // connector.setPort(Integer.valueOf(webPort));
 
-            SslSocketConnector sslConnector = new SslSocketConnector();
-            sslConnector.setPort(Integer.valueOf(sslPort));
-            sslConnector.setKeyPassword("123456");
-            sslConnector.setKeystore("keystore");
+            // SslSocketConnector sslConnector = new SslSocketConnector();
+            // sslConnector.setPort(Integer.valueOf(sslPort));
+            // sslConnector.setKeyPassword("123456");
+            // sslConnector.setKeystore("keystore");
 
-            server.setConnectors(new Connector[] { sslConnector, connector });
-            WebAppContext root = new WebAppContext();
+            // server.setConnectors(new Connector[] { sslConnector, connector });
+            // WebAppContext root = new WebAppContext();
 
-            root.setContextPath("/");
-            root.setDescriptor(webappDirLocation+"/WEB-INF/web.xml");
-            root.setResourceBase(webappDirLocation);
-            root.setParentLoaderPriority(true);
+            // root.setContextPath("/");
+            // root.setDescriptor(webappDirLocation+"/WEB-INF/web.xml");
+            // root.setResourceBase(webappDirLocation);
+            // root.setParentLoaderPriority(true);
 
-            server.setHandler(root);
-            server.start();
-            server.join();
+            // server.setHandler(root);
+            // server.start();
+            // server.join();
         }
         else {
 
