@@ -26,8 +26,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.bio.SocketConnector;
-import org.eclipse.jetty.server.ssl.SslSocketConnector;
+// import org.eclipse.jetty.server.bio.SocketConnector;
+// import org.eclipse.jetty.server.ssl.SslSocketConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
