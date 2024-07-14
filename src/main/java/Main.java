@@ -24,12 +24,13 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-// import org.eclipse.jetty.server.bio.SocketConnector;
-// import org.eclipse.jetty.server.ssl.SslSocketConnector;
-import org.eclipse.jetty.webapp.WebAppContext;
+import java.io.File;
 
+import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.startup.Tomcat;
+import org.apache.catalina.webresources.DirResourceSet;
+import org.apache.catalina.webresources.StandardRoot;
 /**
  *
  * This class launches the web application in an embedded Jetty container.
@@ -70,27 +71,23 @@ public class Main {
                 }
             }
 
-            // Server server = new Server(Integer.valueOf(Integer.valueOf(webPort)));
+            Tomcat tomcat = new Tomcat();
+            tomcat.setPort(Integer.valueOf(webPort));
 
-            // SocketConnector connector = new SocketConnector();
-            // connector.setPort(Integer.valueOf(webPort));
+            StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
+            System.out.println("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 
-            // SslSocketConnector sslConnector = new SslSocketConnector();
-            // sslConnector.setPort(Integer.valueOf(sslPort));
-            // sslConnector.setKeyPassword("123456");
-            // sslConnector.setKeystore("keystore");
+            // Declare an alternative location for your "WEB-INF/classes" dir
+            // Servlet 3.0 annotation will work
+            File additionWebInfClasses = new File("target/classes");
+            WebResourceRoot resources = new StandardRoot(ctx);
+            resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes",
+                    additionWebInfClasses.getAbsolutePath(), "/"));
+            ctx.setResources(resources);
 
-            // server.setConnectors(new Connector[] { sslConnector, connector });
-            // WebAppContext root = new WebAppContext();
+            tomcat.start();
+            tomcat.getServer().await();
 
-            // root.setContextPath("/");
-            // root.setDescriptor(webappDirLocation+"/WEB-INF/web.xml");
-            // root.setResourceBase(webappDirLocation);
-            // root.setParentLoaderPriority(true);
-
-            // server.setHandler(root);
-            // server.start();
-            // server.join();
         }
         else {
 
@@ -106,24 +103,22 @@ public class Main {
                 webPort = "8080";
             }
 
-            Server server = new Server(Integer.valueOf(webPort));
-            WebAppContext root = new WebAppContext();
+        Tomcat tomcat = new Tomcat();
+        tomcat.setPort(Integer.valueOf(webPort));
 
-            root.setContextPath("/");
-            root.setDescriptor(webappDirLocation+"/WEB-INF/web.xml");
-            root.setResourceBase(webappDirLocation);
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
+        System.out.println("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 
-            //Parent loader priority is a class loader setting that Jetty accepts.
-            //By default Jetty will behave like most web containers in that it will
-            //allow your application to replace non-server libraries that are part of the
-            //container. Setting parent loader priority to true changes this behavior.
-            //Read more here: http://wiki.eclipse.org/Jetty/Reference/Jetty_Classloading
-            root.setParentLoaderPriority(true);
+        // Declare an alternative location for your "WEB-INF/classes" dir
+        // Servlet 3.0 annotation will work
+        File additionWebInfClasses = new File("target/classes");
+        WebResourceRoot resources = new StandardRoot(ctx);
+        resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes",
+                additionWebInfClasses.getAbsolutePath(), "/"));
+        ctx.setResources(resources);
 
-            server.setHandler(root);
-
-            server.start();
-            server.join();
+        tomcat.start();
+        tomcat.getServer().await();
         }
     }
 
