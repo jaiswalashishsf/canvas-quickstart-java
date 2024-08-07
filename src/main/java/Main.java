@@ -102,7 +102,7 @@ public class Main {
             if(webPort == null || webPort.isEmpty()) {
                 webPort = "8080";
             }
-
+        System.out.println("Looks like we are running on heroku port : " + webPort);
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(Integer.valueOf(webPort));
 
