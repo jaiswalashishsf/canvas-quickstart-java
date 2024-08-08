@@ -103,13 +103,18 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>appassembler-maven-plugin</artifactId>
-                <version>1.1.1</version>
+                <version>2.1.0</version>
                 <configuration>
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
                             <mainClass>Main</mainClass>
                             <name>webapp</name>
+                            <jvmSettings>
+                                <extraArguments>
+                                    <extraArgument>-Dserver.port=$PORT</extraArgument>
+                                </extraArguments>
+                            </jvmSettings>
                         </program>
                     </programs>
                 </configuration>
