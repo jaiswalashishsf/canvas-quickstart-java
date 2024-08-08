@@ -1,1 +1,1 @@
-web: sh target/bin/webapp
+web: java $JAVA_OPTS -jar -Dserver.port=$PORT target/*.jar
